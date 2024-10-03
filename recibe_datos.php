@@ -56,31 +56,6 @@
                 echo "Interests: " . implode(", ", $data['interests']) . "<br>";
                 echo "Gender: " . htmlspecialchars($data['gender']) . "<br>";
             }
-            
-            $upload_dir = 'ficheros/';
-
-            if (!is_dir($upload_dir)) {
-                mkdir($upload_dir, 0777, true);  // Create the folder if it doesn't exist
-            }
-
-            for ($i = 1; $i <= 2; $i++) {
-                $file_key = 'archivo' . $i;
-                if (isset($_FILES[$file_key]) && $_FILES[$file_key]['error'] == UPLOAD_ERR_OK) {
-                    $file_name = basename($_FILES[$file_key]['name']);
-                    $file_path = $upload_dir . $file_name;
-                    
-                    // If the file already exists, concatenate "_N" to the name
-                    $counter = 1;
-                    while (file_exists($file_path)) {
-                        $file_name_no_ext = pathinfo($file_name, PATHINFO_FILENAME);
-                        $file_ext = pathinfo($file_name, PATHINFO_EXTENSION);
-                        $file_path = $upload_dir . $file_name_no_ext . "_" . $counter . "." . $file_ext;
-                        $counter++;
-                    }
-                    
-                    move_uploaded_file($_FILES[$file_key]['tmp_name'], $file_path);
-                }
-            }
 
         // Validaciones del formulario 2
         }elseif ($form_type === 'formulario_kevin') {
@@ -117,6 +92,31 @@
                     echo "
             - Debes seleccionar al menos un día.";
                 }
+            }
+        }
+        
+        $upload_dir = 'ficheros/';
+
+        if (!is_dir($upload_dir)) {
+            mkdir($upload_dir, 0777, true);  // Create the folder if it doesn't exist
+        }
+
+        for ($i = 1; $i <= 2; $i++) {
+            $file_key = 'archivo' . $i;
+            if (isset($_FILES[$file_key]) && $_FILES[$file_key]['error'] == UPLOAD_ERR_OK) {
+                $file_name = basename($_FILES[$file_key]['name']);
+                $file_path = $upload_dir . $file_name;
+                
+                // If the file already exists, concatenate "_N" to the name
+                $counter = 1;
+                while (file_exists($file_path)) {
+                    $file_name_no_ext = pathinfo($file_name, PATHINFO_FILENAME);
+                    $file_ext = pathinfo($file_name, PATHINFO_EXTENSION);
+                    $file_path = $upload_dir . $file_name_no_ext . "_" . $counter . "." . $file_ext;
+                    $counter++;
+                }
+                
+                move_uploaded_file($_FILES[$file_key]['tmp_name'], $file_path);
             }
         }
     }
