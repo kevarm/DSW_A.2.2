@@ -115,9 +115,31 @@
             $dias = [];
             if (isset($_POST['sabado'])) {
                 $dias[] = $_POST['sabado'];
+                
             }
             if (isset($_POST['domingo'])) {
                 $dias[] = $_POST['domingo'];
+                
+            }
+           
+            $domingo=  isset($_POST['domingo']) ? $_POST['domingo'] : "NO";
+            $sabado= isset($_POST['sabado']) ? $_POST['sabado'] : "NO";
+            $periodico = [$nombre, $noticias, $sabado, $domingo];
+            $tags_periodico = ['nombre', 'noticias', 'sabado', 'domingo'];
+
+           
+            $dato_vacio = '';
+            for ($i = 0; $i < sizeof($periodico); $i++) {
+                if ($i != (sizeof($periodico) - 1)) {
+                    $dato_vacio .= "$tags_periodico[$i]:$periodico[$i]-";
+                } else {
+                    $dato_vacio .= "$tags_periodico[$i]:$periodico[$i]|";
+                }
+            }
+            if (!file_exists('./datos_formulario')) {
+                file_put_contents('datos_formulario', $dato_vacio);
+            } else {
+                file_put_contents('datos_formulario', $dato_vacio, FILE_APPEND);
             }
     
             // Validar los campos
@@ -161,7 +183,7 @@
                 $fichero1_carpeta_info= pathinfo($fichero1);
 
                 while (file_exists($fichero1_carpeta)){
-                    $fichero1= $fichero1_carpeta_info['filename']."_".$contador.".".$fichero1_carpeta['extension'];
+                    $fichero1= $fichero1_carpeta_info['filename']."_".$contador.".".$fichero1_carpeta_info['extension'];
                     $fichero1_carpeta= $carpeta.$fichero1;
                     $contador++;
                 }
