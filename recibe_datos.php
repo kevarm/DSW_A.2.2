@@ -2,6 +2,7 @@
     include 'funciones_validacion.php';
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $form_type = $_POST['form_type'];
+        // Validations of form 1
         if ($form_type === "form_david") {
             // Initialize an array to hold error messages
             $errors = array();
@@ -55,6 +56,7 @@
                 echo "Interests: " . implode(", ", $data['interests']) . "<br>";
                 echo "Gender: " . htmlspecialchars($data['gender']) . "<br>";
             }
+        // Validaciones del formulario 2
         }elseif ($form_type === 'formulario_kevin') {
             $nombre = $_POST['nombre'];
             $noticias = isset($_POST['noticias']) ? $_POST['noticias'] : [];

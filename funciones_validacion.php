@@ -1,4 +1,5 @@
 <?php
+    // Fuction of David
     // Function to validate the first name (must be at least 2 characters)
     function validate_first_name($first_name) {
         return !empty($first_name) && strlen($first_name) >= 2;
@@ -24,6 +25,8 @@
         $valid_genders = array('Male', 'Female', 'Other');
         return in_array($gender, $valid_genders);
     }
+
+    // Funciones de Kevin
     function validarNombre($nombre) {
         // Verifica que el nombre no esté vacío y tenga al menos 2 caracteres
         return !empty($nombre) && strlen($nombre) >= 2;
