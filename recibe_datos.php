@@ -47,14 +47,21 @@
                 }
                 echo '<a href="javascript:history.back()">Return to the form</a>';
             } else {
-                // If no errors, display the received data
+                // If no errors, store data in a file
+                $data_to_store = "Form Type: $form_type\n";
+                foreach ($data as $key => $value) {
+                    if (is_array($value)) {
+                        $data_to_store .= "$key: " . implode(", ", $value) . "\n";
+                    } else {
+                        $data_to_store .= "$key: $value\n";
+                    }
+                }
+
+                // Store the data in the file
+                file_put_contents($file, $data_to_store, FILE_APPEND | LOCK_EX);
+                
                 echo "<h2>Data received successfully:</h2>";
-                echo "First Name: " . htmlspecialchars($data['first_name']) . "<br>";
-                echo "Last Name: " . htmlspecialchars($data['last_name']) . "<br>";
-                echo "Email: " . htmlspecialchars($data['email']) . "<br>";
-                echo "Date of Birth: " . htmlspecialchars($data['birth_date']) . "<br>";
-                echo "Interests: " . implode(", ", $data['interests']) . "<br>";
-                echo "Gender: " . htmlspecialchars($data['gender']) . "<br>";
+                echo nl2br(htmlspecialchars($data_to_store)); // Display the received data
             }
             
             $upload_dir = 'ficheros/';
@@ -119,6 +126,7 @@
                 }
             }
         }
+
         $file = 'form_data.txt';
         $data_to_store = '';
 
