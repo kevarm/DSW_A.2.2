@@ -56,6 +56,57 @@
                 echo "Interests: " . implode(", ", $data['interests']) . "<br>";
                 echo "Gender: " . htmlspecialchars($data['gender']) . "<br>";
             }
+            
+            // Initialize an array to hold uploaded file paths
+            $uploaded_files = [];
+
+            // Function to handle file uploads
+            function handle_file_upload($file_key) {
+                $upload_dir = 'files/'; // Directory where files will be saved
+
+                // Check if the file was uploaded
+                if (isset($_FILES[$file_key]) && $_FILES[$file_key]['error'] == UPLOAD_ERR_OK) {
+                    $original_name = basename($_FILES[$file_key]['name']);
+                    $upload_file = $upload_dir . $original_name;
+                    $counter = 1;
+
+                    // Check if the file already exists
+                    while (file_exists($upload_file)) {
+                        // Generate a new file name with a counter
+                        $new_name = pathinfo($original_name, PATHINFO_FILENAME) . "_$counter." . pathinfo($original_name, PATHINFO_EXTENSION);
+                        $upload_file = $upload_dir . $new_name;
+                        $counter++;
+                    }
+
+                    // Move the uploaded file to the target directory
+                    if (move_uploaded_file($_FILES[$file_key]['tmp_name'], $upload_file)) {
+                        return $upload_file; // Return the path of the uploaded file
+                    } else {
+                        echo "Error uploading file: " . $_FILES[$file_key]['name'];
+                    }
+                } else {
+                  echo "No file uploaded or there was an upload error.";
+                }
+                return null; // Return null if there was an error
+            }
+
+        // Handle each file upload
+        $file1_path = handle_file_upload('file1');
+        $file2_path = handle_file_upload('file2');
+
+        // Store the uploaded file paths in an array
+        if ($file1_path) $uploaded_files[] = $file1_path;
+        if ($file2_path) $uploaded_files[] = $file2_path;
+
+        // (Processing form data here)
+
+        // Display uploaded files (if any)
+        if (!empty($uploaded_files)) {
+            echo "<h2>Uploaded Files:</h2>";
+            foreach ($uploaded_files as $file) {
+                echo "File: " . htmlspecialchars($file) . "<br>";
+            }
+        }
 
         // Validaciones del formulario 2
         }elseif ($form_type === 'formulario_kevin') {
@@ -92,31 +143,6 @@
                     echo "
             - Debes seleccionar al menos un día.";
                 }
-            }
-        }
-        
-        $upload_dir = 'ficheros/';
-
-        if (!is_dir($upload_dir)) {
-            mkdir($upload_dir, 0777, true);  // Create the folder if it doesn't exist
-        }
-
-        for ($i = 1; $i <= 2; $i++) {
-            $file_key = 'archivo' . $i;
-            if (isset($_FILES[$file_key]) && $_FILES[$file_key]['error'] == UPLOAD_ERR_OK) {
-                $file_name = basename($_FILES[$file_key]['name']);
-                $file_path = $upload_dir . $file_name;
-                
-                // If the file already exists, concatenate "_N" to the name
-                $counter = 1;
-                while (file_exists($file_path)) {
-                    $file_name_no_ext = pathinfo($file_name, PATHINFO_FILENAME);
-                    $file_ext = pathinfo($file_name, PATHINFO_EXTENSION);
-                    $file_path = $upload_dir . $file_name_no_ext . "_" . $counter . "." . $file_ext;
-                    $counter++;
-                }
-                
-                move_uploaded_file($_FILES[$file_key]['tmp_name'], $file_path);
             }
         }
     }
