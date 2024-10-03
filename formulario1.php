@@ -1,33 +1,13 @@
 <?php
 // Default values for the form fields
-function load_default_values($file1) {
-    $Values2 = array();
-    if (file_exists($file1)) {
-        $lines = file($file1, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-        foreach ($lines as $line) {
-            list($campo, $value) = explode('=', $line, 2);
-            if ($campo == 'interests') {
-                $Values2[$campo] = explode(',', $value); // Separar intereses por comas
-            } else {
-                $Values2[$campo] = $value;
-            }
-        }
-    }
-    return $Values2;
-}
-
-// Cargar Values2 por defecto desde el archivo
-$values = load_default_values('config_values.txt');
-
-// Values2 por defecto si no se cargan correctamente
-$values = array_merge(array(
-    'first_name' => 'John',
-    'last_name' => 'Doe',
-    'email' => 'john.doe@example.com',
-    'birth_date' => '1990-01-01',
-    'interests' => array('Sports', 'Music'),
-    'gender' => 'Male'
-), $values);
+$values = array(
+    'first_name' => 'John', // Default first name
+    'last_name' => 'Doe', // Default last name
+    'email' => 'john.doe@example.com', // Default email
+    'birth_date' => '1990-01-01', // Default date of birth (YYYY-MM-DD)
+    'interests' => array('Sports', 'Music'), // Default selected interests
+    'gender' => 'Male' // Default gender
+);
 ?>
 
 <!DOCTYPE html>
