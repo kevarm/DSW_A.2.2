@@ -140,7 +140,7 @@
             if ($nombreValido && $noticiasValidas && $diasValidos) {
                 $data_to_store = "Form Type: $form_type\n";
                 $data_to_store .= "Name: $nombre\n";
-                $data_to_store .= "Topics: " . implode(", ", $noticias) . "\n";
+                $data_to_store .= "Topics: " . implode(", ", $noticias) . "\n"; // This should work correctly now
                 $data_to_store .= "Days: " . implode(", ", $dias) . "\n";
     
                 // Store the data in the file
