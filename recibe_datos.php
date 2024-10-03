@@ -119,5 +119,16 @@
                 }
             }
         }
+        $file = 'form_data.txt';
+        $data_to_store = '';
+
+        foreach ($data as $key => $value) {
+            if (is_array($value)) {
+                $data_to_store .= $key . ": " . implode(", ", $value) . "\n";
+            } else {
+                $data_to_store .= $key . ": " . $value . "\n";
+            }
+        }
+        file_put_contents($file, $data_to_store, FILE_APPEND);
     }
 ?>
