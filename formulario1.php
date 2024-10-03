@@ -80,7 +80,7 @@
         <!-- File Upload 2 -->
         <label for="file2">Upload File 2:</label>
         <input type="file" id="file2" name="file2" accept=".jpg, .jpeg, .png, .pdf"><br>
-
+        <br>
         <input type="submit" value="Submit">
         <input type="reset" value="Reset">
     </form>
