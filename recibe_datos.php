@@ -1,5 +1,38 @@
 <?php
     include 'funciones_validacion.php';
+    function save_file($file2,$folder = 'ficheros/') {
+        if (!file_exists($folder)) {
+            mkdir($folder, 0777, true);
+        }
+        $file_name = basename($file2['name']);
+        $file_path = $folder . $file_name;
+
+        // If the file exist add a sufix "_N"
+        $i = 1;
+        while(file_exists($file_path)) {
+            $name_no_ext = pathinfo($file_name, PATHINFO_FILENAME);
+            $extension = pathinfo($file_name, PATHINFO_EXTENSION);
+            $file_path = $folder . $name_no_ext . "_$i" . $extension;
+            $i++;
+        }
+        
+        // Move the uploaded file to the dstination folder
+        if (move_uploaded_file($file2['tmp_name'], $file_path)) {
+            return true; // Return true if it was correctly uploaded
+        }
+        return false; // // Return false in case of an error
+    }
+
+    function save_form_data($fields, $file2 = 'form_data.txt') {
+        $data = "";
+        foreach ($fields as $field => $value) {
+            if (is_array($value)) {
+                $value = implode(',', $value);
+            }
+            $data .= "$field: $value\n";
+        }
+        file_put_contents($field, $data, FILE_APPEND);
+    }
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $form_type = $_POST['form_type'];
         // Validations of form 1
@@ -38,6 +71,18 @@
             // Validate gender (must be selected)
             if (!validate_gender($data['gender'])) {
                 $errors[] = "You must select a valid gender.";
+            }
+
+            if ($_FILES['file1']['error'] == UPLOAD_ERR_OK) {
+                if (!save_file($_FILES['file1'])) {
+                    $errors[] = "Error uploading file 1";
+                }
+            }
+
+            if ($_FILES['file2']['error'] == UPLOAD_ERR_OK) {
+                if (!save_file($_FILES['file2'])) {
+                    $errors[] = "Error uploading file 2";
+                }
             }
 
             // If there are any errors, display them and provide a link to return to the form
