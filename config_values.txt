@@ -1,6 +1,0 @@
-first_name=John
-last_name=Doe
-email=john.doe@example.com
-birth_date=1990-01-01
-interests=Sports,Music
-gender=Male
