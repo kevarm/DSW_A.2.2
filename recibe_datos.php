@@ -144,6 +144,44 @@
             - Debes seleccionar al menos un día.";
                 }
             }
+
+            //require __DIR__  . "/funciones_validacion.php";
+            $carpeta="./ficheros/";
+            if(!file_exists($carpeta)){
+                
+                mkdir("ficheros", 0755);
+
+            }
+
+            if(isset($_FILES['fichero1']) && $_FILES['fichero1']['error'] == UPLOAD_ERR_OK){
+                $fichero1= basename($_FILES['fichero1']['name']);
+                $fichero1_carpeta= $carpeta.$fichero1;
+
+                $contador=1;
+                $fichero1_carpeta_info= pathinfo($fichero1);
+
+                while (file_exists($fichero1_carpeta)){
+                    $fichero1= $fichero1_carpeta_info['filename']."_".$contador.".".$fichero1_carpeta['extension'];
+                    $fichero1_carpeta= $carpeta.$fichero1;
+                    $contador++;
+                }
+                move_uploaded_file($_FILES['fichero1']['tmp_name'], $fichero1_carpeta);
+            }
+
+            if(isset($_FILES['fichero2']) && $_FILES['fichero2']['error'] == UPLOAD_ERR_OK){
+                $fichero2= basename($_FILES['fichero2']['name']);
+                $fichero2_carpeta= $carpeta.$fichero2;
+
+                $contador=1;
+                $fichero2_carpeta= $carpeta.$fichero2;
+
+                while (file_exists($fichero2_carpeta)){
+                    $fichero2= $fichero2_carpeta['filename']."_".$contador.".".$fichero2_carpeta['extension'];
+                    $fichero2_carpeta= $carpeta.$fichero2;
+                    $contador++;
+                }
+                move_uploaded_file($_FILES['fichero2']['tmp_name'], $fichero2_carpeta);
+            }
         }
     }
 ?>
