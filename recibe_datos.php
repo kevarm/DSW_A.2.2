@@ -138,13 +138,6 @@
             
             // Comprobar si todos los campos son válidos
             if ($nombreValido && $noticiasValidas && $diasValidos) {
-                $data_to_store = "Form Type: $form_type\n";
-                $data_to_store .= "Name: $nombre\n";
-                $data_to_store .= "Topics: " . implode(", ", $noticias) . "\n"; // This should work correctly now
-                $data_to_store .= "Days: " . implode(", ", $dias) . "\n";
-    
-                // Store the data in the file
-                file_put_contents($file, $data_to_store, FILE_APPEND | LOCK_EX);
                 echo "¡Datos enviados correctamente!";
             // Aquí proceso los datos, como guardarlos en una base de datos
             } else {
