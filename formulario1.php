@@ -1,13 +1,33 @@
 <?php
-// Default values for the form fields
-$values = array(
-    'first_name' => 'John', // Default first name
-    'last_name' => 'Doe', // Default last name
-    'email' => 'john.doe@example.com', // Default email
-    'birth_date' => '1990-01-01', // Default date of birth (YYYY-MM-DD)
-    'interests' => array('Sports', 'Music'), // Default selected interests
-    'gender' => 'Male' // Default gender
-);
+
+    $values = array();
+
+    // Path to the default values file
+    $file_path = 'default_values.txt';
+
+    // Open the file and read it line by line
+    if (file_exists($file_path)) {
+    $file = fopen($file_path, "r");
+    
+        while (($line = fgets($file)) !== false) {
+            // Split the line into key and value
+            $parts = explode('=', trim($line));
+            if (count($parts) === 2) {
+                $key = $parts[0];
+                $value = $parts[1];
+                // If it's 'interests', convert the string to an array
+                if ($key == 'interests') {
+                    $values[$key] = explode(',', $value);
+                } else {
+                    $values[$key] = $value;
+                }
+            }
+        }
+        fclose($file); // Close the file after reading
+    } else {
+        echo "Error: Default values file not found.";
+    }
+
 ?>
 
 <!DOCTYPE html>
@@ -18,7 +38,7 @@ $values = array(
 </head>
 <body>
     <h2>Registration Form</h2>
-    <form action="recibe_datos.php" method="POST">
+    <form action="recibe_datos.php" method="POST" enctype="multipart/form-data">
 
         <!-- Tell the diference between forms  --> 
         <input type="hidden" name="form_type" value="form_david">
@@ -53,6 +73,14 @@ $values = array(
             <option value="Other" <?php if($values['gender'] == 'Other') echo 'selected'; ?>>Other</option>
         </select><br><br>
 
+        <!-- File Upload 1 -->
+        <label for="file1">Upload File 1:</label>
+        <input type="file" id="file1" name="file1" accept=".jpg, .jpeg, .png, .pdf"><br>
+
+        <!-- File Upload 2 -->
+        <label for="file2">Upload File 2:</label>
+        <input type="file" id="file2" name="file2" accept=".jpg, .jpeg, .png, .pdf"><br>
+        <br>
         <input type="submit" value="Submit">
         <input type="reset" value="Reset">
     </form>
